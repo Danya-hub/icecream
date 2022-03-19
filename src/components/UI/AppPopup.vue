@@ -47,20 +47,12 @@
   }
 
   .back-enter-active,
-  .back-leave-active,
-  .content-enter-active,
-  .content-leave-active {
+  .back-leave-active {
     transition: .2s opacity;
   }
 
-  .content-enter-active {
-    transition-delay: 4s;
-  }
-
   .back-enter,
-  .back-leave-to,
-  .content-enter,
-  .content-leave-to {
+  .back-leave-to {
     opacity: 0;
   }
 </style>

@@ -65,5 +65,9 @@ module.exports = {
     'no-restricted-syntax': ['off', 'ForInStatement', 'ForOfStatement'],
     'consistent-return': 'off',
     'spaced-comment': 'off',
+    'no-unused-expressions': 'off',
+    'dot-notation': 'off',
+    'object-shorthand': 'off',
+    'func-names': 'off',
   }
 }

@@ -1,22 +1,22 @@
 <template>
   <footer>
-    <h2 class="title left">{{ $root.byCurrLang('Наше меню', 'Our menu') }}</h2>
+    <h2 class="title left">{{ ['Наше меню', 'Our menu'][$root.currLang] }}</h2>
     <div class="wrapper">
       <div :id="parent.name" v-for="parent in links" :key="parent.name">
-        <h3>{{ $root.byCurrLang(...parent.title) }}:</h3>
+        <h3>{{ parent.title[$root.currLang] }}:</h3>
         <nav>
           <ul>
             <li :id="child.name" v-for="child in parent.content" :key="child.name">
-              <a href="">{{ $root.byCurrLang(...child.title) }}</a>
+              <a href="">{{ child.title[$root.currLang] }}</a>
             </li>
           </ul>
         </nav>
       </div>
       <div id="socialNetwork">
-        <h3>{{ $root.byCurrLang('Наши контакты', 'Our contacts') }}:</h3>
+        <h3>{{ ['Наши контакты', 'Our contacts'][$root.currLang] }}:</h3>
         <WorkSocialNetwork></WorkSocialNetwork>
         <WorkContact></WorkContact>
-        <button class="whiteButton">{{ $root.byCurrLang('Заказать звонок', 'Request call') }}</button>
+        <button class="whiteButton">{{ ['Заказать звонок', 'Request call'][$root.currLang] }}</button>
       </div>
     </div>
   </footer>

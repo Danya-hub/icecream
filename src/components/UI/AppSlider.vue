@@ -189,6 +189,7 @@
 
 <style scoped>
   .slider {
+        height: 100vh;
     overflow: hidden;
     user-select: none;
   }
@@ -224,7 +225,7 @@
     height: 100%;
     opacity: 0.6;
     top: 0;
-    z-index: 1;
+    z-index: 2;
   }
 
   .arrow:hover {

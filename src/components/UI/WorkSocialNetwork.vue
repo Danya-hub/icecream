@@ -1,8 +1,8 @@
 <template>
   <ul id="socialNetwork">
     <li v-for="(e, i) in socNetwork" :key="i">
-      <a :href="e.url" :id="e.name" class="whiteButton">
-        <FontAwesomeIcon :icon="['fab', e.name]" class="icon" />
+      <a :href="e.url" :id="e.name" class="whiteButton" :title="e.name">
+        <i :class="['fab', `fa-${e.name}`]" aria-hidden="true"></i>
       </a>
     </li>
   </ul>

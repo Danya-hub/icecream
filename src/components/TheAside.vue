@@ -158,32 +158,35 @@
   }
 
   #switch {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     position: relative;
     padding: 0 var(--gap-left);
+    height: 60%;
   }
 
   #switch button {
     --backg: var(--white);
     --size: 24px;
+    --scale: 0.7;
 
     background: rgba(var(--backg));
     transition: 0.2s all;
-    transform: scale(0.7);
+    transform: scale(var(--scale));
     box-shadow: inset 0 0 0 2px rgb(var(--black));
     border-radius: 50%;
     width: calc(var(--size) + var(--step-0));
     height: calc(var(--size) + var(--step-0));
-    margin: 20px 0;
     color: rgb(var(--color));
   }
 
   #switch button:hover,
   #switch button.active {
-    transform: scale(1);
-
-    text-shadow: 0 0 10px rgb(var(--white));
     --backg: var(--black);
     --color: var(--white);
+    --scale: 1;
+    text-shadow: 0 0 10px rgb(var(--white));
   }
 
   #switch::before {

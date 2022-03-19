@@ -1,19 +1,21 @@
 <template>
-  <Select :content="lang" :strictClose="strictClose" @switch="(ind) => $root.selectLangInd = ind"></Select>
+  <Select :content="lang" :strictAction="strictAction" @switch="(ind) => $root.currLang = ind"></Select>
 </template>
 
 <script>
+  import {
+    mapGetters,
+  } from 'vuex';
+
   export default {
     name: 'Lang',
-    data() {
-      return {
-        lang: ['ru', 'en'],
-      };
-    },
     props: {
-      strictClose: {
-        type: Boolean,
+      strictAction: {
+        type: Object,
       },
+    },
+    computed: {
+      ...mapGetters(['lang']),
     },
   };
 </script>

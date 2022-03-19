@@ -1,13 +1,17 @@
 <template>
-  <label>
-    <input :placeholder="placeholder" v-model.trim="value">
-    <span v-if="limit" id="limit">{{~(value.length - 1) ? value.length - 1 : 0}}/{{limit}}</span>
-  </label>
+  <div>
+    <span v-if="!isInner" class="text">{{ placeholder }}</span>
+    <div class="input">
+      <input :type="type" :placeholder="isInner ? placeholder : ''" v-model.trim="value">
+      <slot></slot>
+    </div>
+    <span v-if="limit" class="limit">{{~(value.length - 1) ? value.length - 1 : 0}}/{{limit}}</span>
+  </div>
 </template>
 
 <script>
   export default {
-    name: 'Input',
+    name: 'InputClient',
     data() {
       return {
         value: '',
@@ -18,9 +22,13 @@
       };
     },
     props: {
+      isInner: {
+        type: Boolean,
+        default: true,
+      },
       placeholder: {
         type: String,
-        required: true,
+        default: '',
       },
       contentType: {
         type: String,
@@ -33,6 +41,10 @@
       limit: {
         type: Number,
         default: 0,
+      },
+      type: {
+        type: String,
+        default: 'text',
       },
     },
     computed: {
@@ -72,12 +84,19 @@
   };
 </script>
 
+<style>
+  .input i:not(.noPoint) {
+    pointer-events: none;
+  }
+</style>
+
 <style scoped>
-  label {
-    display: flex;
+  input {
+    padding: 10px calc(var(--step-0) * 2);
+    width: 100%;
   }
 
-  #limit {
+  .limit {
     display: flex;
     align-items: center;
     padding: var(--space-top) 14px;
@@ -85,5 +104,32 @@
     color: rgba(var(--gray), 0.8);
     user-select: none;
     pointer-events: none;
+  }
+
+  .text {
+    display: block;
+    font-size: calc(var(--step-0) - 2px);
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: rgb(var(--gray));
+    user-select: none;
+  }
+
+  .input {
+    --size: calc(var(--step-0) - 2px);
+    position: relative;
+  }
+
+  .input>*:not(input) {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 var(--size);
+  }
+
+  .input i {
+    color: rgb(var(--coffee));
+    font-size: var(--size);
   }
 </style>

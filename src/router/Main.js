@@ -1,12 +1,14 @@
 import Vue from 'vue';
-import mixin from '@/mixin.js';
 
 import {
-    state as Main,
-  } from '@/store/Main.js';
-  import {
-    renameOldname,
-  } from '@/helper.js';
+  data as Lang,
+} from '@/mixin.js';
+import {
+  state as Main,
+} from '@/store/Main.js';
+import {
+  renameOldname,
+} from '@/helper.js';
 
 export default [{
     id: 'descr',
@@ -166,11 +168,6 @@ export default [{
           return Math.round(window.innerWidth / this.imageSize()) - 1;
         },
       },
-      methods: {
-        byCurrLang(args) {
-          return mixin.methods.byCurrLang(...args);
-        },
-      },
       render() {
         return {
           tag: 'div',
@@ -217,7 +214,7 @@ export default [{
                         },
                       },
                     },
-                    components: [this.methods.byCurrLang(obj.title)],
+                    components: [obj.title[Lang.currLang]],
                   },
                 ],
               })),

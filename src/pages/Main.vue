@@ -37,7 +37,7 @@
               components: [{
                 tag: 'h2',
                 options: {
-                  class: 'title',
+                  class: 'title center',
                 },
                 components: [card.text],
               }, {
@@ -84,22 +84,6 @@
     top: 0;
   }
 
-  #review .cards {
-    height: fit-content;
-  }
-
-  .slider {
-    height: 100vh;
-  }
-
-  #entry .slider {
-    min-width: 100vw;
-  }
-
-  #entry .card {
-    filter: brightness(100%);
-  }
-
   #entry .title {
     position: absolute;
     font-family: 'Raleway', sans-serif;
@@ -117,6 +101,10 @@
     line-height: 5vh;
     letter-spacing: 2px;
     z-index: 1;
+  }
+
+  #review .cards {
+    height: fit-content;
   }
 
   #review .title {

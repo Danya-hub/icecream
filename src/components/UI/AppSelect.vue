@@ -1,10 +1,12 @@
 <template>
-  <div id="select" :class="{visible: isVisible}">
-    <span class="mask" @click="isVisible = !isVisible">{{ content[actInd] }}</span>
-    <div class="window scroll" v-show="isVisible">
-      <span class="option" v-for="(text, ind) in content" :key="ind"
-        @click="(isVisible = false, $emit('switch', actInd = ind))">{{ text }}</span>
-    </div>
+  <div id="select" :class="{visible: isOpen}">
+    <span v-if="isVisSel" class="mask" @click="isOpen = !isOpen">{{ content[actInd] }}</span>
+    <transition name="window">
+      <div class="window scroll" v-show="isOpen || strOpen">
+        <span class="option" v-for="(text, ind) in content" :key="ind"
+          @click="(isOpen = false, $emit('switch', actInd = ind))">{{ text }}</span>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -16,20 +18,35 @@
         type: Array,
         required: true,
       },
-      strictClose: {
+      strictAction: {
+        type: Object,
+        default: () => ({
+          close: false,
+          open: false,
+        }),
+      },
+      isVisSel: {
         type: Boolean,
         default: true,
+      },
+    },
+    computed: {
+      strClose() {
+        return this.strictAction.close;
+      },
+      strOpen() {
+        return this.strictAction.open;
       },
     },
     data() {
       return {
         actInd: 0,
-        isVisible: false,
+        isOpen: false,
       };
     },
     watch: {
-      strictClose() {
-        this.isVisible = false;
+      strClose() {
+        this.isOpen = false;
       },
     },
   };
@@ -80,6 +97,7 @@
     display: block;
     border-bottom: 1px solid rgb(var(--coffee));
     padding: 6px 20px;
+    white-space: nowrap;
   }
 
   .window span:last-child {
@@ -100,5 +118,15 @@
   span {
     cursor: pointer;
     user-select: none;
+  }
+
+  .window-enter-active,
+  .window-leave-active {
+    transition: .2s opacity;
+  }
+
+  .window-enter,
+  .window-leave-to {
+    opacity: 0;
   }
 </style>

@@ -1,17 +1,18 @@
 <template>
   <section id="question">
-    <h2 class="title left">{{ $root.byCurrLang('Остались вопросы?', 'Do you have any questions?') }}</h2>
+    <h2 class="title left">{{ ['Остались вопросы?', 'Do you have any questions?'][$root.currLang] }}</h2>
     <div class="wrapper">
-      <p>{{ $root.byCurrLang(
+      <p>{{ [
         'Заполните форму и наш менеджер свяжется с Вами в ближайшее время',
         'Fill out the form and our manager will contact You shortly'
-      ) }}</p>
+      ][$root.currLang] }}</p>
       <Form id="form">
         <label>
           <Select :content="telephone.map(prop => '+' + prop.code)" @switch="(ind) => actInd = ind"></Select>
-          <Input type="text" :placeholder="telephone[actInd].placeholder" :format="telephone[actInd].placeholder" :contentType="'Number'" />
+          <InputClient :placeholder="telephone[actInd].placeholder" :format="telephone[actInd].placeholder"
+            :contentType="'Number'" />
         </label>
-        <button type="submit">{{ $root.byCurrLang('Отправить', 'Submit') }}</button>
+        <button type="submit">{{ ['Отправить', 'Send'][$root.currLang] }}</button>
       </Form>
     </div>
   </section>
@@ -58,7 +59,7 @@
     flex-wrap: wrap;
   }
 
-  form > label {
+  form>label {
     display: flex;
     box-shadow:
       0 0 0 2px rgba(var(--blackCoffee), 0.6),
@@ -69,7 +70,6 @@
   }
 
   form>* {
-    box-shadow: inset 0 0 0 2px rgba(var(--blackCoffee), 0.6);
     border-radius: 100vw;
     height: fit-content;
   }
@@ -80,25 +80,6 @@
 
   .title::after {
     top: 100%;
-  }
-
-  button {
-    --backg: rgb(var(--coffee));
-    --color: rgb(var(--blackCoffee));
-
-    background: var(--backg);
-    font-weight: 700;
-    text-transform: uppercase;
-    transition: all 0.4s;
-    padding: var(--space-top) 20px;
-    letter-spacing: 1px;
-    color: var(--color);
-  }
-
-  button:hover {
-    box-shadow: unset;
-    --backg: rgb(var(--blackCoffee));
-    --color: rgb(var(--milk));
   }
 
   p {

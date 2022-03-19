@@ -16,7 +16,6 @@ export default {
         code: '375',
       },
     ],
-    lang: ['ru', 'en'],
   },
   getters: {
     telephone(state) {

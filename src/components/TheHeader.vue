@@ -3,35 +3,44 @@
     <section id="topPanel" ref="section">
       <div class="wrapper">
         <button id="catalog">
-          <i class="fas fa-ice-cream"></i>
-          {{ $root.byCurrLang('Каталог', 'Catalog') }}
+          <i class="fas fa-ice-cream" aria-hidden="true"></i>
+          {{ ['Каталог', 'Catalog'][$root.currLang] }}
         </button>
         <ul id="baseLinks" v-if="width >= 880">
           <li>
-            <a href="">{{ $root.byCurrLang('Помощь', 'Help') }}</a>
+            <a href="">{{ ['Помощь', 'Help'][$root.currLang] }}</a>
           </li>
           <li>
-            <a href="">{{ $root.byCurrLang('Контакты', 'Contact') }}</a>
+            <a href="">{{ ['Контакты', 'Contact'][$root.currLang] }}</a>
           </li>
           <li>
-            <a href="">{{ $root.byCurrLang('Акции', 'Stock') }}</a>
+            <a href="">{{ ['Акции', 'Stock'][$root.currLang] }}</a>
           </li>
         </ul>
-        <a href="" class="logo" v-if="width >= 560">
+        <a href="" class="logo" v-if="width >= 560"
+          :title="['Магазин мороженого - №1', 'Ice cream shop - №1'][$root.currLang]">
           <img :src="require('@/assets/svg/logo.svg')" alt="logo" title="logo">
         </a>
         <ul id="currLinks" v-if="width >= 1280">
           <li :id="obj.id" v-for="(obj, ind) in Object.values(currLinks.state || [])" :key="ind">
-            <a @click="$emit('clickLink', ind)">{{ $root.byCurrLang(...obj.title) }}</a>
+            <a @click="$emit('clickLink', ind)">{{ obj.title[$root.currLang] }}</a>
           </li>
         </ul>
         <div v-if="width >= 560" id="client">
-          <button id="cart">
-            <i class="fas fa-shopping-cart"></i>
+          <button id="cart" :title="['Корзина', 'Cart'][$root.currLang]">
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
           </button>
-          <button id="user">
-            <i class="fas fa-user"></i>
-          </button>
+          <div id="user">
+            <button @click="isVisUser = !isVisUser" :title="['Пользователь', 'User'][$root.currLang]">
+              <i class="fas fa-user" aria-hidden="true"></i>
+            </button>
+            <Select :content="[
+                ['Логин', 'Sign in'][$root.currLang],
+                ['Регистрация', 'Sign up'][$root.currLang],
+              ]" @switch="(ind) => $router.push({ name: ['Login', 'Register'][ind], params: {
+                lang: lang[$root.currLang],
+             }})" :isVisSel="false" :strictAction="{ open: isVisUser }"></Select>
+          </div>
         </div>
       </div>
     </section>
@@ -39,6 +48,10 @@
 </template>
 
 <script>
+  import {
+    mapGetters,
+  } from 'vuex';
+
   export default {
     name: 'Header',
     props: {
@@ -47,7 +60,13 @@
         required: true,
       },
     },
+    data() {
+      return {
+        isVisUser: false,
+      };
+    },
     computed: {
+      ...mapGetters(['lang']),
       width: {
         get() {
           return window.innerWidth;
@@ -59,9 +78,6 @@
         },
       },
     },
-    mounted() {
-      console.log(this.currLinks);
-    },
   };
 </script>
 
@@ -69,6 +85,12 @@
   header {
     position: absolute;
     width: 100%;
+    z-index: 9;
+  }
+
+  header .window {
+    transform: translateX(-50%);
+    left: 50%;
   }
 
   #topPanel {
@@ -82,10 +104,6 @@
 
   #topPanel .wrapper>*:not(ul) {
     margin: 20px 10px;
-  }
-
-  .slider :where(.cards, .card) {
-    --sizeArrowSlider: 100%;
   }
 </style>
 
@@ -153,6 +171,6 @@
   }
 
   #client button {
-    margin: 0 14px;
+    padding: 14px;
   }
 </style>

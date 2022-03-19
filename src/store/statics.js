@@ -1,7 +1,8 @@
 export const state = {
+  lang: ['ru', 'en'],
   telNum: ['+380 xxx-xx-xx', '+380 xxx-xx-xx'],
   socNetwork: [{
-    name: 'facebook-f',
+    name: 'facebook',
     url: '',
   }, {
     name: 'instagram',
@@ -98,6 +99,9 @@ export const getters = {
   },
   socNetwork(obj) {
     return obj.socNetwork;
+  },
+  lang(obj) {
+    return obj.lang;
   },
 };
 
