@@ -23,9 +23,6 @@
 
 <style scoped>
   .description {
-    --sizeWrapImg: 40%;
-    --sizeImg: 280px;
-
     position: relative;
     height: 100%;
   }
@@ -53,7 +50,7 @@
   .image {
     --size: clamp(200px, 50vw, 380px);
 
-    width: var(--size);
+    min-width: var(--size);
     height: var(--size);
   }
 
@@ -74,10 +71,6 @@
 
     .wrapper:nth-child(even) {
       flex-direction: row-reverse;
-    }
-
-    .text {
-      width: calc(100% - var(--sizeWrapImg));
     }
   }
 </style>

@@ -24,6 +24,7 @@ export default {
         state: MainState,
         visible: {
           header: true,
+          aside: true,
           footer: true,
         },
       },

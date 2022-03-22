@@ -1,5 +1,5 @@
 <template>
-  <Select :content="lang" :strictAction="strictAction" @switch="(ind) => $root.currLang = ind"></Select>
+  <Select :content="lang" :actInd="actInd" :strictAction="strictAction" @switch="(ind) => $root.currLang = ind"></Select>
 </template>
 
 <script>
@@ -10,6 +10,10 @@
   export default {
     name: 'Lang',
     props: {
+      actInd: {
+        type: Number,
+        required: true,
+      },
       strictAction: {
         type: Object,
       },

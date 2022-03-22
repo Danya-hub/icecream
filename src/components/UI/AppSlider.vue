@@ -52,15 +52,12 @@
                 const vm = this;
 
                 let _ = this.setActionForFindProp((obj) => {
-                  if (obj.options.label) {
-                    setStyleForElem(obj.options.class, this.compileObjToStr(renameOldname({
-                      minWidth: `${this.toPercent((this.widthCard / vm.defualtRow) - (vm.space * 2), this.widthCard)}vw`,
-                      margin: `0 ${this.toPercent(vm.space, window.innerWidth)}%`,
-                      ...obj.options.style,
-                    })).replace(/[A-Z]/g, findSymb => `-${findSymb.toLowerCase()}`));
-
-                    //? delete obj.options.style;
-                  }
+                  if (!obj.options.isGlobal) return;
+                  setStyleForElem(obj.options.class, this.compileObjToStr(renameOldname({
+                    minWidth: `${this.toPercent((this.widthCard / vm.defualtRow) - (vm.space * 2), this.widthCard)}vw`,
+                    margin: `0 ${this.toPercent(vm.space, window.innerWidth)}%`,
+                    ...obj.options.style,
+                  })).replace(/[A-Z]/g, findSymb => `-${findSymb.toLowerCase()}`));
                 });
 
                 return _(this.content);
@@ -117,11 +114,11 @@
     computed: {
       ...mapGetters(['mutableSelectors']),
       widthCard() {
-        if (!this.fixRow) {
-          let fixWidth = 0;
+        let width = 0;
 
+        if (!this.fixRow) {
           this.setActionForFindProp((obj) => {
-            if (!obj.options.label) return;
+            if (!Object.keys(obj.options.style).some(key => this.mutableSelectors.map(_obj => _obj.oldName).flat().includes(key))) return;
             const style = obj.options.style;
 
             for (const key in style)
@@ -130,12 +127,12 @@
                 this.mutableSelectors.forEach((mutObj) => {
                   mutObj.oldName.forEach((mutKey) => {
                     if (mutKey == key)
-                      fixWidth = parseInt(style[mutKey], 10);
+                      width = parseInt(style[mutKey], 10);
                   });
                 });
           })(this.content);
 
-          return fixWidth + (this.space * 2);
+          return width + (this.space * 2);
         }
 
         return innerWidth;
@@ -149,9 +146,7 @@
     },
     methods: {
       toPercent(currNum, parNum) {
-        const _ = (currNum * 100) / parNum;
-
-        return _ || 0;
+        return (currNum * 100) / parNum || 0;
       },
       isObject(value) {
         return typeof value == 'object' && !value.length;
@@ -189,7 +184,7 @@
 
 <style scoped>
   .slider {
-        height: 100vh;
+    height: 100vh;
     overflow: hidden;
     user-select: none;
   }

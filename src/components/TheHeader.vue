@@ -6,7 +6,7 @@
           <i class="fas fa-ice-cream" aria-hidden="true"></i>
           {{ ['Каталог', 'Catalog'][$root.currLang] }}
         </button>
-        <ul id="baseLinks" v-if="width >= 880">
+        <ul id="baseLinks" v-if="$root.widthPage >= media.tablet">
           <li>
             <a href="">{{ ['Помощь', 'Help'][$root.currLang] }}</a>
           </li>
@@ -17,16 +17,16 @@
             <a href="">{{ ['Акции', 'Stock'][$root.currLang] }}</a>
           </li>
         </ul>
-        <a href="" class="logo" v-if="width >= 560"
+        <a href="" class="logo" v-if="$root.widthPage >= media.mobile"
           :title="['Магазин мороженого - №1', 'Ice cream shop - №1'][$root.currLang]">
           <img :src="require('@/assets/svg/logo.svg')" alt="logo" title="logo">
         </a>
-        <ul id="currLinks" v-if="width >= 1280">
+        <ul id="currLinks" v-if="$root.widthPage >= media.desktop">
           <li :id="obj.id" v-for="(obj, ind) in Object.values(currLinks.state || [])" :key="ind">
             <a @click="$emit('clickLink', ind)">{{ obj.title[$root.currLang] }}</a>
           </li>
         </ul>
-        <div v-if="width >= 560" id="client">
+        <div v-if="$root.widthPage >= media.mobile" id="client">
           <button id="cart" :title="['Корзина', 'Cart'][$root.currLang]">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
           </button>
@@ -66,17 +66,7 @@
       };
     },
     computed: {
-      ...mapGetters(['lang']),
-      width: {
-        get() {
-          return window.innerWidth;
-        },
-      },
-      height: {
-        get() {
-          return window.innerHeight;
-        },
-      },
+      ...mapGetters(['lang', 'media']),
     },
   };
 </script>

@@ -56,7 +56,7 @@ export default [{
                   attrs: {
                     id: i,
                   },
-                  label: 'here',
+                  isGlobal: true,
                 },
                 components: [{
                     tag: 'div',
@@ -165,7 +165,7 @@ export default [{
           return Math.max(this.minWidth, Math.min(window.innerWidth * 0.5, this.maxWidth));
         },
         visibleCardInd() {
-          return Math.round(window.innerWidth / this.imageSize()) - 1;
+          return Math.round(window.innerWidth / this.imageSize()) - 1 || 1;
         },
       },
       render() {

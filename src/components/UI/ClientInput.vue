@@ -108,10 +108,12 @@
 
   .text {
     display: block;
+    color: rgb(var(--gray));
     font-size: calc(var(--step-0) - 2px);
     font-weight: 600;
+    line-height: 24px;
+    text-transform: capitalize;
     margin-bottom: 10px;
-    color: rgb(var(--gray));
     user-select: none;
   }
 

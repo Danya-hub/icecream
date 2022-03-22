@@ -1,4 +1,9 @@
 export const state = {
+  media: {
+    mobile: 560,
+    tablet: 880,
+    desktop: 1280,
+  },
   lang: ['ru', 'en'],
   telNum: ['+380 xxx-xx-xx', '+380 xxx-xx-xx'],
   socNetwork: [{
@@ -102,6 +107,9 @@ export const getters = {
   },
   lang(obj) {
     return obj.lang;
+  },
+  media(obj) {
+    return obj.media;
   },
 };
 

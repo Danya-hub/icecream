@@ -10,7 +10,7 @@
         <label>
           <Select :content="telephone.map(prop => '+' + prop.code)" @switch="(ind) => actInd = ind"></Select>
           <InputClient :placeholder="telephone[actInd].placeholder" :format="telephone[actInd].placeholder"
-            :contentType="'Number'" />
+            contentType="Number" />
         </label>
         <button type="submit">{{ ['Отправить', 'Send'][$root.currLang] }}</button>
       </Form>

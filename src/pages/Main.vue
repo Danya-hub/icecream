@@ -32,7 +32,7 @@
                 style: {
                   position: 'relative',
                 },
-                label: 'here',
+                isGlobal: true,
               },
               components: [{
                 tag: 'h2',
@@ -80,8 +80,12 @@
 
 <style>
   #descr .title {
+    background: rgb(var(--white));
+    padding-left: 5%;
+    padding-right: 5%;
     position: absolute;
     top: 0;
+    z-index: 1;
   }
 
   #entry .title {

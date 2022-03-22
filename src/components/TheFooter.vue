@@ -1,7 +1,7 @@
 <template>
   <footer>
     <h2 class="title left">{{ ['Наше меню', 'Our menu'][$root.currLang] }}</h2>
-    <div class="wrapper">
+    <div class="wrapper scroll">
       <div :id="parent.name" v-for="parent in links" :key="parent.name">
         <h3>{{ parent.title[$root.currLang] }}:</h3>
         <nav>
@@ -53,6 +53,8 @@
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-gap: 14px 3%;
     padding: 0 6%;
+    height: 80vh;
+    padding-bottom: 3%;
   }
 
   li>* {

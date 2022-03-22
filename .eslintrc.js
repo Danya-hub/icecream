@@ -69,5 +69,7 @@ module.exports = {
     'dot-notation': 'off',
     'object-shorthand': 'off',
     'func-names': 'off',
+    'vue/no-async-in-computed-properties': 'off',
+    'no-return-assign': 'off',
   }
 }

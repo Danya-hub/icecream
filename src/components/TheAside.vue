@@ -1,12 +1,15 @@
 <template>
-  <div id="aside">
+  <div id="aside"
+    :style="[$root.widthPage >= media.mobile ? {transitionDuration: durationSroll + 's', transform: `translateY(${Math.abs(getTop($root.$el))}px)`} : fixed]">
     <transition name="animMenu">
-      <button v-show="widthWindow >= 510 && !isHideElem() || widthWindow < 510" id="open" @click="$emit('open', true)">
+      <button id="open" v-show="$root.widthPage >= media.mobile && !isHideElem() || $root.widthPage < media.mobile"
+        :style="{...renameOldname({ size: sizeMenu + 'px' })}" @click="$emit('open', true)" ref="menu">
         <img :src="require('@/assets/svg/bars.svg')" alt="open">
       </button>
     </transition>
-    <aside ref="aside" v-show="widthWindow >= 510">
-      <div id="switch" ref="switch">
+    <aside :style="[$root.widthPage >= media.mobile ? {transitionDuration: durationSroll + 's', transitionProperty: 'width'} : {}]" ref="aside"
+      v-show="$root.widthPage >= media.mobile">
+      <div id="switch">
         <button ref="button" v-for="ind in countSect" :key="ind" @click="switchActBut(ind)">{{ ind }}</button>
       </div>
     </aside>
@@ -21,6 +24,7 @@
 
   import {
     setActionForScrolling,
+    renameOldname,
   } from '@/helper.js';
 
   let oldInd = 0;
@@ -30,31 +34,20 @@
     data() {
       return {
         countSect: 0,
+        sizeMenu: 36,
+        fixed: {
+          position: 'fixed',
+          right: 0,
+          top: 0,
+        },
       };
     },
     mounted() {
-      this.countSect = Math.round(document.body.offsetHeight / this.heightWindow);
+      this.countSect = Math.round(document.body.offsetHeight / window.innerHeight);
 
-      this.elem = this.$refs.aside;
-      //! --------------------
-      this.widthAside = this.elem.offsetWidth + (parseInt(window.getComputedStyle(this.$refs.switch, null).paddingLeft,
-          10) *
-        2);
-      //! --------------------
-
-      this.elem.style.cssText += `
-        transition-duration: ${this.durationSroll}s;
-        transition-property: width;
-      `;
-
-      this.setSize();
       this.$nextTick(() => {
-        this.$el.style.cssText = `
-          transform: translateY(${Math.abs(this.getTop(this.$root.$el))}px);
-          transition-duration: ${this.durationSroll}s;
-        `;
+        this.setSize();
 
-        this.buttons = this.$refs.button;
         setActionForScrolling({
             innerTimeout: () => this.setActiveElem(this.activeInd),
           },
@@ -63,17 +56,19 @@
       });
     },
     computed: {
-      ...mapGetters(['scrollByAxisY', 'durationSroll', 'isScrollUp']),
-      widthWindow() {
-        return window.innerWidth;
-      },
-      heightWindow() {
-        return window.innerHeight;
-      },
+      ...mapGetters([
+        'scrollByAxisY',
+        'durationSroll',
+        'isScrollUp',
+        'media',
+      ]),
       activeInd: {
         get() {
-          return Math.round(Math.abs(this.scrollByAxisY + this.getTop(this.$root.$el)) / this.heightWindow);
+          return Math.round(Math.abs(this.scrollByAxisY + this.getTop(this.$root.$el)) / window.innerHeight);
         },
+      },
+      aside() {
+        return this.$refs.aside;
       },
     },
     methods: {
@@ -88,8 +83,10 @@
         return Math.round(elem.getBoundingClientRect().top);
       },
       setActiveElem(actInd) {
-        this.buttons.forEach(e => e.classList.remove('active'));
-        this.buttons[actInd].classList.add('active');
+        let buttons = this.$refs.button;
+
+        buttons.forEach(e => e.classList.remove('active'));
+        buttons[actInd].classList.add('active');
 
         this.setSize();
       },
@@ -97,14 +94,16 @@
         let currInd = ind - 1;
         this.setBScroll(currInd < oldInd);
 
-        this.mutableScroll(-((this.heightWindow * currInd) + this.getTop(this.$root.$el)));
+        this.mutableScroll(-((window.innerHeight * currInd) + this.getTop(this.$root.$el)));
         this.setActiveElem(currInd);
 
         oldInd = currInd;
       },
       setSize() {
-        this.elem.style.width = `${this.isHideElem() ? 0 : this.widthAside}px`;
+        this.aside.style.width =
+          `${this.isHideElem() ? 0 : this.sizeMenu + (parseInt(window.getComputedStyle(this.$refs.menu, null).marginLeft, 10) * 2)}px`;
       },
+      renameOldname,
     },
     watch: {
       scrollByAxisY() {
@@ -162,7 +161,6 @@
     flex-direction: column;
     justify-content: space-around;
     position: relative;
-    padding: 0 var(--gap-left);
     height: 60%;
   }
 

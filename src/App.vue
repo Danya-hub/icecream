@@ -1,7 +1,7 @@
 <template>
   <With-Aside>
     <template v-slot:main>
-      <div class="wrapper" ref="wrapper">
+      <div class="wrapper" ref="wrapper" :style="[$root.widthPage >= media.mobile ?{transitionDuration: `${durationSroll}s`} : {}]">
         <Header v-if="isVisible('header')" :currLinks="currRoute"
           @clickLink="(i) => mutableScroll(renderComponent[i].child.y)">
         </Header>
@@ -12,14 +12,14 @@
       </div>
     </template>
     <template v-slot:aside>
-      <Aside @open="(bool) => setPauseScroll(isOpenMenu = bool)"></Aside>
+      <Aside v-if="isVisible('aside')" @open="(bool) => setPauseScroll(isOpenMenu = bool)"></Aside>
       <Popup @close="(bool) => setPauseScroll(isOpenMenu = bool)" id="menu" v-show="pauseScroll">
         <template v-slot:content>
           <div class="panel">
             <a href="" class="logo">
               <img :src="require('@/assets/svg/logo.svg')" alt="logo" title="logo">
             </a>
-            <Lang :strictAction="{ close: !isOpenMenu}"></Lang>
+            <Lang :actInd="$root.currLang" :strictAction="{ close: !isOpenMenu}"></Lang>
           </div>
           <div class="navigation scroll">
             <nav :id="parent.name" v-for="(parent, i) in links" :key="i">
@@ -67,6 +67,7 @@
         'pauseScroll',
         'links',
         'lang',
+        'media',
       ]),
       currRoute() {
         return this.$route.meta;
@@ -95,8 +96,11 @@
 
         return arr;
       },
-      elem() {
-        return this.$refs.wrapper;
+      startY() {
+        return Math.abs(Math.round(this.$refs.wrapper.getBoundingClientRect().top));
+      },
+      widthPage() {
+        return this.$root.widthPage;
       },
     },
     data() {
@@ -131,36 +135,41 @@
         }
       },
       getHeightPage() {
-        return window.innerHeight - document.body.clientHeight;
+        return Math.round((window.innerHeight - document.body.offsetHeight) / window.innerHeight) * window.innerHeight;
+      },
+      disableScroll() {
+        document.body.style.overflow = this.widthPage >= this.media.mobile ? 'hidden' : '';
+      },
+      setScroll() {
+        if (this.widthPage < this.media.mobile) return;
+        setActionForScrolling({
+            innerListener: (e) => {
+              this.setBScroll(e.wheelDeltaY > 1);
+            },
+            innerTimeout: () => {
+              if (this.pauseScroll) return;
+
+              this.mutableScroll(this.setScrollByAxisY(this.isScrollUp));
+            },
+          },
+          this.durationSroll * 1000,
+        );
       },
     },
     created() {
       this.setCurrLang();
     },
     mounted() {
-      setActionForScrolling({
-          innerListener: (e) => {
-            this.setBScroll(e.wheelDeltaY > 1);
-          },
-          innerTimeout: () => {
-            if (this.pauseScroll) return;
-
-            this.mutableScroll(this.setScrollByAxisY(this.isScrollUp));
-          },
-        },
-        this.durationSroll * 1000,
-      );
-
-      //* --------
-      this.startY = Math.abs(Math.round(this.elem.getBoundingClientRect().top));
-
-      this.elem.style.cssText = `
-        transition-duration: ${this.durationSroll}s;
-      `;
+      this.disableScroll();
+      this.setScroll();
     },
     watch: {
       scrollByAxisY() {
         this.$refs.wrapper.style.transform = `translateY(${this.scrollByAxisY}px)`;
+      },
+      widthPage() {
+        this.disableScroll();
+        this.setScroll();
       },
     },
   };
