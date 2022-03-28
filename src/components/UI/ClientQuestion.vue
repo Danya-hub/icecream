@@ -6,7 +6,7 @@
         'Заполните форму и наш менеджер свяжется с Вами в ближайшее время',
         'Fill out the form and our manager will contact You shortly'
       ][$root.currLang] }}</p>
-      <Form id="form">
+      <Form id="form" :method="() => {}">
         <label>
           <Select :content="telephone.map(prop => '+' + prop.code)" @switch="(ind) => actInd = ind"></Select>
           <InputClient :placeholder="telephone[actInd].placeholder" :format="telephone[actInd].placeholder"
@@ -32,6 +32,9 @@
     },
     computed: {
       ...mapGetters(['telephone']),
+    },
+    mounted() {
+      console.log(this.telephone[this.actInd].placeholder);
     },
   };
 </script>

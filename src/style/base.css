@@ -70,13 +70,10 @@ p,
 span,
 a,
 button,
-label {
-  font-size: calc(var(--step-0) - 2px);
-}
-
+label,
 input,
 input::placeholder {
-  font-size: var(--step-0);
+  font-size: calc(var(--step-0) - 2px);
 }
 
 a,

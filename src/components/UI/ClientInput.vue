@@ -1,17 +1,37 @@
 <template>
-  <div>
+  <div class="input">
     <span v-if="!isInner" class="text">{{ placeholder }}</span>
-    <div class="input">
-      <input :type="type" :placeholder="isInner ? placeholder : ''" v-model.trim="value">
+    <div class="wrapper">
+      <Elem v-if="limit" :placeholder="placeholder" :value="value" :type="type" :isInner="isInner"
+        @update="(val) => $emit('update', value = setValidVal(val))" :maxLength="limit"></Elem>
+      <Elem v-else :value="value" :placeholder="placeholder" :type="type" :isInner="isInner" @update="(val) => $emit('update', value = val)">
+      </Elem>
       <slot></slot>
     </div>
-    <span v-if="limit" class="limit">{{~(value.length - 1) ? value.length - 1 : 0}}/{{limit}}</span>
+    <span v-if="limit" class="limit">{{value.length}}/{{limit}}</span>
   </div>
 </template>
 
 <script>
+  import Vue from 'vue';
+
   export default {
     name: 'InputClient',
+    components: {
+      Elem: Vue.component('Elem', {
+        template: `
+            <input :placeholder="isInner ? placeholder : ''" :value="value" @input="$emit('update', $event.target.value)" required>
+          `,
+        props: {
+          isInner: Boolean,
+          value: {
+            type: String,
+            default: '',
+          },
+          placeholder: String,
+        },
+      }),
+    },
     data() {
       return {
         value: '',
@@ -47,6 +67,11 @@
         default: 'text',
       },
     },
+    methods: {
+      setValidVal(val) {
+        return val.length <= this.limit ? val : this.value;
+      },
+    },
     computed: {
       readyFormat: {
         get() {
@@ -55,7 +80,7 @@
           let isOutside = false,
             ind = 0;
 
-          if (!this.format.length) return this.value;
+          if (!this.format.length || !this.limit) return this.value;
           this.format.split('').forEach((e) => {
             if (isOutside) return;
             let isContentType = this.contentType == 'String' ? isNaN(parseInt(e, 10)) : !isNaN(parseInt(e, 10)),
@@ -76,6 +101,7 @@
     watch: {
       value() {
         this.value = this.readyFormat;
+        this.$emit('write', this.value);
       },
       format() {
         this.value = this.readyFormat;
@@ -91,17 +117,21 @@
 </style>
 
 <style scoped>
+  .input {
+    position: relative;
+  }
+
   input {
     padding: 10px calc(var(--step-0) * 2);
     width: 100%;
   }
 
   .limit {
-    display: flex;
-    align-items: center;
-    padding: var(--space-top) 14px;
+    position: absolute;
     font-size: calc(var(--step-0) - 2px);
-    color: rgba(var(--gray), 0.8);
+    color: rgba(var(--gray), 0.6);
+    right: 0;
+    bottom: calc(var(--step-0) * -1.5);
     user-select: none;
     pointer-events: none;
   }
@@ -117,12 +147,12 @@
     user-select: none;
   }
 
-  .input {
+  .wrapper {
     --size: calc(var(--step-0) - 2px);
     position: relative;
   }
 
-  .input>*:not(input) {
+  .wrapper>*:not(input) {
     position: absolute;
     left: 0;
     top: 50%;

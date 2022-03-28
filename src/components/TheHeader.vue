@@ -37,7 +37,7 @@
             <Select :content="[
                 ['Логин', 'Sign in'][$root.currLang],
                 ['Регистрация', 'Sign up'][$root.currLang],
-              ]" @switch="(ind) => $router.push({ name: ['Login', 'Register'][ind], params: {
+              ]" @switch="(ind) => $router.push({ name: ['Signin', 'Signout'][ind], params: {
                 lang: lang[$root.currLang],
              }})" :isVisSel="false" :strictAction="{ open: isVisUser }"></Select>
           </div>

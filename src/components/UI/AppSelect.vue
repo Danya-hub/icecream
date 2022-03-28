@@ -1,10 +1,10 @@
 <template>
   <div id="select" :class="{visible: isOpen}">
-    <span v-if="isVisSel" class="mask" @click="isOpen = !isOpen">{{ content[_actInd] }}</span>
+    <span v-if="isVisSel" class="mask" @click="isOpen = !isOpen">{{ content[prActInd] }}</span>
     <transition name="window">
       <div class="window scroll" v-show="isOpen || strOpen">
         <span class="option" v-for="(text, ind) in content" :key="ind"
-          @click="(isOpen = false, $emit('switch', _actInd = ind))">{{ text }}</span>
+          @click="(isOpen = false, $emit('switch', prActInd = ind))">{{ text }}</span>
       </div>
     </transition>
   </div>
@@ -35,9 +35,6 @@
       },
     },
     computed: {
-      _actInd() {
-        return this.actInd;
-      },
       strClose() {
         return this.strictAction.close;
       },
@@ -48,6 +45,7 @@
     data() {
       return {
         isOpen: false,
+        prActInd: this.actInd,
       };
     },
     watch: {

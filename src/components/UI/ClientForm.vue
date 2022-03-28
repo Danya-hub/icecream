@@ -1,5 +1,5 @@
 <template>
-  <form action="" method="post" @submit="isValid">
+  <form @submit.prevent="method">
     <slot></slot>
   </form>
 </template>
@@ -7,9 +7,10 @@
 <script>
   export default {
     name: 'Form',
-    methods: {
-      isValid() {
-
+    props: {
+      method: {
+        type: Function,
+        required: true,
       },
     },
   };
