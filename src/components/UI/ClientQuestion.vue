@@ -33,9 +33,6 @@
     computed: {
       ...mapGetters(['telephone']),
     },
-    mounted() {
-      console.log(this.telephone[this.actInd].placeholder);
-    },
   };
 </script>
 
