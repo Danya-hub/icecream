@@ -1,7 +1,7 @@
 import MainState from '@/router/Main.js';
 
 import Main from '@/pages/Main.vue';
-import Signout from '@/pages/Signout.vue';
+import Signup from '@/pages/Signup.vue';
 import Signin from '@/pages/Signin.vue';
 import Error from '@/pages/Error.vue';
 
@@ -22,14 +22,14 @@ export default {
       },
     },
     {
-      path: '/signin/:leng',
+      path: '/signin/:lang',
       name: Signin.name,
       component: Signin,
     },
     {
-      path: '/signout/:leng',
-      name: Signout.name,
-      component: Signout,
+      path: '/signup/:lang',
+      name: Signup.name,
+      component: Signup,
     },
     {
       path: '*',
