@@ -1,6 +1,6 @@
 <template>
   <header>
-    <section id="topPanel" ref="section">
+    <section id="topPanel" :style="{position: isAbs ? 'absolute' : 'unset'}">
       <div class="wrapper">
         <button id="catalog">
           <i class="fas fa-ice-cream" aria-hidden="true"></i>
@@ -17,10 +17,14 @@
             <a href="">{{ ['Акции', 'Stock'][$root.currLang] }}</a>
           </li>
         </ul>
-        <a href="" class="logo" v-if="$root.widthPage >= media.mobile"
-          :title="['Магазин мороженого - №1', 'Ice cream shop - №1'][$root.currLang]">
+        <router-link class="logo" v-if="$root.widthPage >= media.mobile"
+          :title="['Магазин мороженого - №1', 'Ice cream shop - №1'][$root.currLang]" :to="{ name: 'Main',
+            params: {
+              lang: lang[$root.currLang],
+            },
+          }">
           <img :src="require('@/assets/svg/logo.svg')" alt="logo" title="logo">
-        </a>
+        </router-link>
         <ul id="currLinks" v-if="$root.widthPage >= media.desktop">
           <li :id="obj.id" v-for="(obj, ind) in Object.values(currLinks.state || [])" :key="ind">
             <a @click="$emit('clickLink', ind)">{{ obj.title[$root.currLang] }}</a>
@@ -35,9 +39,12 @@
               <i class="fas fa-user" aria-hidden="true"></i>
             </button>
             <Select :content="[
-                ['Логин', 'Sign in'][$root.currLang],
-                ['Регистрация', 'Sign up'][$root.currLang],
-              ]" @switch="(ind) => $router.push({ name: ['Signin', 'Signup'][ind], params: {
+              [...currClient ? ['Мой кабинет', 'My cabinet'] : ['Войти', 'Sign in']][$root.currLang],
+              ['Регистрация', 'Sign up'][$root.currLang],
+            ]" @switch="(ind) => $router.push({ name: [
+                currClient ? 'Cabinet' : 'Signin',
+                'Signup',
+              ][ind], params: {
                 lang: lang[$root.currLang],
              }})" :isVisSel="false" :strictAction="{ open: isVisUser }"></Select>
           </div>
@@ -59,6 +66,10 @@
         type: Object,
         required: true,
       },
+      isAbs: {
+        type: Boolean,
+        default: false,
+      },
     },
     data() {
       return {
@@ -66,14 +77,17 @@
       };
     },
     computed: {
-      ...mapGetters(['lang', 'media']),
+      ...mapGetters([
+        'lang',
+        'media',
+        'currClient',
+      ]),
     },
   };
 </script>
 
 <style>
   header {
-    position: absolute;
     width: 100%;
     z-index: 9;
   }

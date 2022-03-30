@@ -1,5 +1,4 @@
 export default {
-  // namespaced: true,
   state: {
     scrollByAxisY: 0,
     durationSroll: 0.6,

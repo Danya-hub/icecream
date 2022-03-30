@@ -1,5 +1,4 @@
 export default {
-  // namespaced: true,
   state: {
     images: [
       require('@/assets/video/pexels-rodnae-productions-6412512_K0W3Ps1W.mp4'),

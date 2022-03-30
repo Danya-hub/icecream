@@ -1,5 +1,4 @@
 export const state = {
-  // namespaced: true,
   media: {
     mobile: 560,
     tablet: 880,

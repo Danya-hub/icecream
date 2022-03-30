@@ -1,8 +1,9 @@
 <template>
   <With-Aside>
     <template v-slot:main>
-      <div class="wrapper" ref="wrapper" :style="[$root.widthPage >= media.mobile ?{transitionDuration: `${durationSroll}s`} : {}]">
-        <Header v-if="isVisible('header')" :currLinks="currRoute"
+      <div class="wrapper" ref="wrapper"
+        :style="[$root.widthPage >= media.mobile ? {transitionDuration: `${durationSroll}s`} : {}]">
+        <Header v-if="isVisible('header')" :isAbs="currRoute.isAbsHead" :currLinks="currRoute"
           @clickLink="(i) => mutableScroll(renderComponent[i].child.y)">
         </Header>
         <main>

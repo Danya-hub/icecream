@@ -1,8 +1,7 @@
 export default {
-  // namespaced: true,
   state: {
     dataAPI: JSON.parse(localStorage.getItem('auth')) || [],
-    currClient: null,
+    currClient: JSON.parse(localStorage.getItem('client')) || null,
   },
   mutations: {
     dataAPI(state, val) {
@@ -17,9 +16,12 @@ export default {
       state,
       commit,
     }, data) {
-      return new Promise(() => commit('currClient', state.dataAPI.find(obj => data.login == obj.name || data.login == obj.email)));
+      return new Promise(() => {
+        commit('currClient', state.dataAPI.find(obj => data.login == obj.name || data.login == obj.email));
+        localStorage.setItem('client', JSON.stringify(state.currClient));
+      });
     },
-    onSignout({
+    onSignup({
       state,
       commit,
     }, data) {
@@ -32,6 +34,9 @@ export default {
   getters: {
     dataAPI(state) {
       return state.dataAPI;
+    },
+    currClient(state) {
+      return state.currClient;
     },
   },
 };

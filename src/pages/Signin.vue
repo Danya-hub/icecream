@@ -26,7 +26,7 @@
         <router-link :to="{
           name: 'Signup',
           params: {
-            lang: this.lang[this.$root.currLang],
+            lang: lang[$root.currLang],
           },}" replace>{{ ['Вы не зарегистрированы?', 'You are not sign up?'][$root.currLang] }}</router-link>
         <button type="submit" id="submit">{{ ['Войти', 'Sign in'][$root.currLang] }}</button>
       </Form>
@@ -112,6 +112,6 @@
   };
 </script>
 
-<style>
+<style scoped>
   @import url("../style/auth.css");
 </style>

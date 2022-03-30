@@ -41,7 +41,7 @@
         <router-link :to="{
           name: 'Signin',
           params: {
-            lang: this.lang[this.$root.currLang],
+            lang: lang[$root.currLang],
           },}" replace>{{ ['Вы уже зарегистрированы?', 'You are already signed up?'][$root.currLang] }}</router-link>
         <button type="submit" id="submit">{{ ['Зарегистрироваться', 'Sign up'][$root.currLang] }}</button>
       </Form>
@@ -106,10 +106,10 @@
       };
     },
     methods: {
-      ...mapActions(['onSignout']),
+      ...mapActions(['onSignup']),
       send() {
         if (!this.isValid) return;
-        this.onSignout(this.authData).then(this.clear);
+        this.onSignup(this.authData).then(this.clear);
 
         this.$router.push({
           name: 'Signin',
@@ -132,6 +132,6 @@
   };
 </script>
 
-<style>
+<style scoped>
   @import url("../style/auth.css");
 </style>
